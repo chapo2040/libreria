@@ -30,10 +30,11 @@ export default function Agregar()
       axios.get(dameURL() + `Libro/${state.id}`)
       .then(res => 
       {
-          //alert("Libro: " + res.data.nombre);     
-          reset({
-            txtId: res.data.id,
-            txtNombre: res.data.nombre            
+        //alert("Libro: " + res.data.nombre);     
+        reset({
+          txtId: res.data.id,
+          txtNombre: res.data.nombre,
+          txtExistencia: res.data.existencia            
         });
 
       })
@@ -59,7 +60,8 @@ export default function Agregar()
   {
       reset({
         txtId: "",
-        txtNombre: ""
+        txtNombre: "",
+        txtExistencia: ""
     });
   }  
 
@@ -93,7 +95,7 @@ export default function Agregar()
   {
     // alert('agregarLibro.');    
     
-    axios.post(dameURL() + `Libro`, { id: data.txtId, nombre: data.txtNombre })
+    axios.post(dameURL() + `Libro`, { id: data.txtId, nombre: data.txtNombre, existencia: data.txtExistencia, prestado: 0 })
     .then(res => 
     {
       //alert(res.data);
@@ -115,7 +117,7 @@ export default function Agregar()
     
     if(validateForm(data)===true)
     {  
-      axios.put(dameURL() + `Libro/${data.txtId}`, { id: data.txtId, nombre: data.txtNombre })
+      axios.put(dameURL() + `Libro/${data.txtId}`, { id: data.txtId, nombre: data.txtNombre, existencia: data.txtExistencia, prestado: 0 })
       .then(res => 
       {       
         //console.log(res.data);
@@ -142,22 +144,26 @@ export default function Agregar()
     
     <React.Fragment>
       
-      <h3> {Titulo} </h3>
+    <div class='pnlAgregar'>
 
       <form>
-        <label>
-            Libro Id: <input type="text" name="txtId" disabled={isEdit} {...register("txtId")} />
-          </label> <br></br>
-          <label>
-            Nombre: <input type="text" name="txtNombre" {...register("txtNombre")} />
-          </label>
-          
-          <br/><br/>
+  
+        <center> <text class="titulo"> Libreria "Potosinos" </text> </center> <br/> <br/>
 
-          <button onClick={handleSubmit(onCancel)}> Cancelar </button>
-          <button onClick={handleSubmit(OnSubmit)}> Guardar </button>          
+        <table>
+        <tr> <th colSpan={2} class="cabecera"> {Titulo} Libro </th> </tr>
+        <tr> <td class="renglon"> Libro Id </td> <td class="renglon"> <input type="text" name="txtId" disabled={isEdit} {...register("txtId")} /></td> </tr>
+        <tr> <td class="renglon"> Nombre: </td> <td class="renglon"> <input type="text" name="txtNombre" {...register("txtNombre")} /> </td> </tr>
+        <tr> <td class="renglon"> Existencia: </td> <td class="renglon"> <input type="text" name="txtExistencia" {...register("txtExistencia")} />  </td> </tr>
+        <tr> <td colSpan={2} class="renglonBotones">         
+          <button class="boton" onClick={handleSubmit(onCancel)}> Cancelar </button>
+          <button class="boton" onClick={handleSubmit(OnSubmit)}> Guardar </button>                  
+        </td> </tr>
+        </table>
 
-        </form>
+      </form>
+    
+    </div>
 
     </React.Fragment>
   )

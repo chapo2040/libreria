@@ -9,7 +9,7 @@ export default function Login()
   const [Libros, setLibros] = useState([]);
   const navigate = useNavigate(); 
  
-  function cargaSesion() 
+  function cargarSesion() 
   {
     //alert("cargaSesion.");
     reset({
@@ -27,7 +27,7 @@ export default function Login()
   useEffect(() => 
   { 
     //alert("useEffect. ");
-    cargaSesion();    
+    cargarSesion();
   }, []);  
 
 
@@ -70,6 +70,15 @@ export default function Login()
       }
       else
       {        
+        var loUsuario = 
+        {           
+            username: res.data.usuario.username,
+            password: res.data.usuario.password,
+            nombre: res.data.usuario.nombre,
+            isLogin: true
+        };
+
+        localStorage.setItem('usuario', JSON.stringify(loUsuario));     
         navigate("/");
       }
     });       
@@ -92,25 +101,28 @@ export default function Login()
   return (
     
     <React.Fragment>
-      
-      <h3> Inicio de Sesión </h3>
+
+    <div class='pnlLogin'>
 
       <form>
-        <label>
-            Usuario: <input type="text" name="txtUsuario" {...register("txtUsuario")} />
-          </label> <br></br>
-          <label>
-            Contraseña: <input type="password" name="txtPassword" {...register("txtPassword")} />
-          </label>
-          
-          <br/><br/>
 
-          <button onClick={handleSubmit(onCancel)}> Cancelar </button>
-          <button onClick={handleSubmit(OnSubmit)}> Entrar </button>
+        <center> <text class="titulo"> Libreria "Potosinos" </text> </center> <br/> <br/>
 
-          <br/><br/>
+        <table>
+        <tr> <th colSpan={2} class="cabecera" >  Inicio de Sesión </th> </tr>
+        <tr> <td class="renglon"> Usuario: </td> <td class="renglon"> <input type="text" name="txtUsuario" {...register("txtUsuario")} /> </td> </tr>
+        <tr> <td class="renglon"> Contrasena: </td> <td class="renglon"> <input type="password" name="txtPassword" {...register("txtPassword")} /> </td> </tr>
+        <tr> <td colSpan={2} class="renglonBotones"> 
+          <center>
+            <button class="boton" onClick={handleSubmit(onCancel)}> Cancelar </button>
+            <button class="boton" onClick={handleSubmit(OnSubmit)}> Entrar </button>          
+          </center>
+        </td> </tr>
+        </table>
 
-        </form>
+      </form>
+    
+    </div>  
 
     </React.Fragment>
   )

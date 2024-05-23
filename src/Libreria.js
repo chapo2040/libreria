@@ -7,8 +7,33 @@ export default function Libreria()
 {
   const {register, handleSubmit, reset, formState: { errors }} = useForm();   
   const [Libros, setLibros] = useState([]);
+  const [Sesion, setSesion] = useState({});
   const navigate = useNavigate(); 
- 
+
+  var isLoad = 0;
+
+  useEffect(() => 
+    { 
+      //alert("useEffect. ");
+      if(isLoad == 0){ CargarSesion(); }
+    }, []);  
+
+  function CargarSesion()
+  {
+      //alert('ObtenerSesion ! ');      
+      isLoad = 1;
+
+      var loUsuario = JSON.parse(localStorage.getItem('usuario'));
+      if (loUsuario) 
+      {
+        //alert('loUsuario | username ' + loUsuario.username + ' - password: ' + loUsuario.password + " - isLogin: " + loUsuario.isLogin);
+        setSesion(loUsuario);   
+        //alert(Sesion.isLogin);             
+      }
+
+      llenaLibros();
+  }
+
   function llenaLibros() 
   {
     //alert("llenaLibros. ");
@@ -29,13 +54,6 @@ export default function Libreria()
     var lsPath = process.env.REACT_APP_NODE_ENV === '1' ? process.env.REACT_APP_SERVER_TEST : process.env.REACT_APP_SERVER;
     return lsPath;
   }
- 
-  useEffect(() => 
-  { 
-    //alert("useEffect. ");
-    llenaLibros();    
-  }, []);  
-
 
   function onDelete(data, event)
   { 
@@ -74,16 +92,14 @@ export default function Libreria()
 
   function onAgregar(data, event) 
   {    
-    //alert('onAgregar.');
-    //navigate('/agregar');
+    //alert('onAgregar.');    
     navigate('/agregar', { state: { edit:false } } );
   } 
 
   function onEditar(data, event) 
   {
     //alert('onEditar | ' + event.target.getAttribute('id'));
-    var liId = event.target.getAttribute('id');
-    //navigate('/agregar');  
+    var liId = event.target.getAttribute('id');    
     navigate('/agregar', { state: { edit:true, id: liId } } );
   } 
 
@@ -99,25 +115,28 @@ export default function Libreria()
 
   function LibroExistencia(tipo, data, event) 
   {    
-    var liId = event.target.getAttribute('id');
+    var liId = parseInt(event.target.getAttribute('id'));
     var lsNombre = event.target.getAttribute('nombre');
-    var liExistencia = event.target.getAttribute('existencia');
-    var liPrestado = event.target.getAttribute('prestado');
+    var liExistencia = parseInt(event.target.getAttribute('existencia'));
+    var liPrestado = parseInt(event.target.getAttribute('prestado'));
 
     var liActualizar = 0;
     
     if(tipo==1)
     {
-      if(liPrestado + 1 <= liExistencia ){ liPrestado++; liActualizar = 1; }
+      var liCuenta = liPrestado + 1;
+      if(liCuenta <= liExistencia ){ liPrestado++; liActualizar = 1; }
       else{ alert("No hay existencia del libro: " + lsNombre); }
     }
     else
     {
-      if(liPrestado - 1 >= 0){ liPrestado--; liActualizar = 1; }
+      var liCuenta = liPrestado - 1;
+      if(liCuenta >= 0){ liPrestado--; liActualizar = 1; }
       else{ alert("Libros completos del libro: " + lsNombre); }
     }
 
-    //alert('LibroExistencia | tipo: ' + tipo + ' - id: ' + liId + " - nombre: " + lsNombre + " - existencia: " + liExistencia + " - Prestado: " + liPrestado);
+    //alert('LibroExistencia | liCuenta: ' + liCuenta + ' - existencia: ' + liExistencia);
+    //alert('LibroExistencia | tipo: ' + tipo + ' - id: ' + liId + ' - nombre: ' + lsNombre + ' - existencia: ' + liExistencia + ' - Prestado: ' + liPrestado);
     
     if(liActualizar == 1)
     {
@@ -138,6 +157,16 @@ export default function Libreria()
     }    
   } 
 
+  function onCerrar() 
+  {
+    //alert('onCerrar.');
+    //localStorage.removeItem('usuario');
+    var loUsuario = { username: "",  password: "", nombre: "", isLogin: false };
+    localStorage.setItem('usuario', JSON.stringify(loUsuario));  
+    setSesion(loUsuario);   
+    navigate("/");
+  } 
+
   return (
     
     <React.Fragment>
@@ -148,7 +177,9 @@ export default function Libreria()
             
             <center> <text class="titulo"> Libreria "Potosinos" </text> </center>
 
-            <button class="btnIniciar" onClick={handleSubmit(onLogin)}> Iniciar </button> 
+            <text class="txtNombre"> {Sesion.isLogin == 1 ? ("<" + Sesion.nombre + ">") : ""}  </text>
+            <button class="btnIniciar" onClick={handleSubmit(onCerrar)} hidden={!Sesion.isLogin}> Salir </button>
+            <button class="btnIniciar" onClick={handleSubmit(onLogin)} hidden={Sesion.isLogin}> Iniciar </button>
             <button class="btnAgregar" onClick={handleSubmit(onAgregar)}> Agregar </button> 
             {/*  <button class="btnRecargar" onClick={handleSubmit(onRefresh)}> Recargar </button> */}
           </div>
@@ -158,12 +189,12 @@ export default function Libreria()
             { 
                Libros.map(libro => 
                <tr> 
-                <td> {libro.id} </td> 
+                <td class="colCentrar"> {libro.id} </td> 
                 <td> {libro.nombre} </td> 
-                <td> {libro.existencia - libro.prestado} </td> 
-                <td> 
-                  {/* <button class="btnPrestar" id={libro.id} nombre={libro.nombre} existencia={libro.existencia} prestado={libro.prestado} onClick={handleSubmit(onPrestar)}> Prestar </button> */}
-                  {/* <button class="btnRegresar" id={libro.id} nombre={libro.nombre} existencia={libro.existencia} prestado={libro.prestado} onClick={handleSubmit(onRegresar)}> Regresar </button> */}
+                <td class="colCentrar"> {libro.existencia - libro.prestado} </td> 
+                <td class="colBotones">  
+                  <button class="btnPrestar" id={libro.id} nombre={libro.nombre} existencia={libro.existencia} prestado={libro.prestado} hidden={!Sesion.isLogin} onClick={handleSubmit(onPrestar)}> Prestar </button>
+                  <button class="btnRegresar" id={libro.id} nombre={libro.nombre} existencia={libro.existencia} prestado={libro.prestado} hidden={!Sesion.isLogin} onClick={handleSubmit(onRegresar)}> Regresar </button>
                   <button class="btnEditar" id={libro.id} onClick={handleSubmit(onEditar)}> Editar </button> 
                   <button class="btnBorrar" id={libro.id} onClick={handleSubmit(onDelete)}> Borrar </button> 
                 </td>
