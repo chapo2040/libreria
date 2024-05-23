@@ -1,38 +1,125 @@
-.App {
-  text-align: center;
+table 
+{
+  border-collapse: collapse;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+table th 
+{
+  background: #067bcf;
+  color: #fff;
+  font-size: 18px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+table tr:nth-child(odd) 
+{
+	background: #bfc4f2;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+table tr:nth-child(even) 
+{
+	background: #f0f0ee;
+}
+
+.tablaPrincipal
+{
+  width: 98%;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.botones
+{  
+  text-align: right;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.titulo
+{
+  font-size: 19px;
+  font-weight: bold;
+  color: rgb(191, 96, 28);
+}
+
+.btnIniciar
+{    
+  margin-right: 5px;
+  background-color: white;
+  border-radius: 5px;
+  border: solid 1px #72797d;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.btnIniciar:hover
+{    
+  background-color: rgb(191, 96, 28);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.btnAgregar
+{    
+  margin-right: 5px;
+  background-color: rgb(17, 176, 91);
+  border-radius: 5px;
+  border: solid 1px #72797d;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btnAgregar:hover
+{    
+  background-color: rgb(191, 96, 28);
+  color: white;
+}
+
+.btnRecargar
+{    
+  margin-right: 5px;
+  background-color: rgb(17, 176, 91);
+  border-radius: 5px;
+  border: solid 1px #72797d;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+}
+
+.btnRecargar:hover
+{    
+  background-color: rgb(191, 96, 28);
+  color: white;
+}
+
+.btnEditar
+{    
+  margin-right: 2px;
+  background-color: rgb(253, 253, 17);
+  border-radius: 5px;
+  border: solid 1px #72797d;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+}
+
+.btnEditar:hover
+{    
+  background-color:rgb(18, 109, 199);
+  color: white;
+}
+
+.btnBorrar
+{ 
+  background-color: rgb(255, 0, 0);
+  border-radius: 5px;
+  border: solid 1px #72797d;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #ffffff;
+}
+
+.btnBorrar:hover
+{    
+  background-color: rgb(18, 109, 199);
+  color: white;
 }

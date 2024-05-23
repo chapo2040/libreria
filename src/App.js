@@ -1,23 +1,23 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import './App.css';
 
-function App() {
-  return (
+import Libreria from './Libreria';
+import Login from './Login';
+import Agregar from './Agregar';
+
+function App() 
+{
+  return (    
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+       <Router>
+          <Routes>    
+            <Route path="/" element={<Libreria />} />            
+            <Route path="/login" element={<Login />} />
+            <Route path="/agregar" element={<Agregar />} />
+          </Routes>
+        </Router>
+
     </div>
   );
 }
