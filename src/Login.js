@@ -3,13 +3,19 @@ import {useForm} from 'react-hook-form'
 import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 
-export default function Login() 
-{
+const Login = ()  => 
+{  
   const {register, handleSubmit, reset, formState: { errors }} = useForm();   
   const [Libros, setLibros] = useState([]);
   const navigate = useNavigate(); 
- 
-  function cargarSesion() 
+
+  useEffect(() => 
+  { 
+    //alert("useEffect. ");
+    cargarSesion();
+  }, []); 
+
+  const cargarSesion = () =>
   {
     //alert("cargaSesion.");
     reset({
@@ -17,21 +23,14 @@ export default function Login()
       txtPassword: "123"
     });
   }
-
-  function dameURL()
+  
+  const dameURL = () =>
   {
     var lsPath = process.env.REACT_APP_NODE_ENV === '1' ? process.env.REACT_APP_SERVER_TEST : process.env.REACT_APP_SERVER;
     return lsPath;
   }
- 
-  useEffect(() => 
-  { 
-    //alert("useEffect. ");
-    cargarSesion();
-  }, []);  
 
-
-  function OnSubmit(data)
+  const OnSubmit = (data) =>
   {   
       //alert("OnSubmit. ");    
       if(validateForm(data)===true)
@@ -40,7 +39,7 @@ export default function Login()
       }     
   }
 
-  function validateForm(data)
+  const validateForm = (data) =>
   {
       if(data.txtUsuario==='' || data.txtUsuario === undefined)    
       {
@@ -56,7 +55,7 @@ export default function Login()
       return true;
   }
 
-  function IniciarSesion(data)
+  const IniciarSesion = (data) =>
   {
     //alert('IniciarSesion.');    
     axios.post(dameURL() + `Usuarios/UsuarioLogin`, { username: data.txtUsuario, password: data.txtPassword })
@@ -84,7 +83,7 @@ export default function Login()
     });       
   }
 
-  function limpiarFormulario()
+  const limpiarFormulario = () =>
   {
     reset({
       txtUsuario: "",
@@ -92,39 +91,39 @@ export default function Login()
     });
   }  
 
-  function onCancel()
+  const onCancel = () =>
   {
     //alert('onCancel: ');    
     navigate("/");    
-  }  
+  } 
 
-  return (
-    
-    <React.Fragment>
 
-    <div class='pnlLogin'>
+  return(
 
-      <form>
+  <div class='pnlLogin'>
 
-        <center> <text class="titulo"> Libreria "Potosinos" </text> </center> <br/> <br/>
+  <form>
 
-        <table>
-        <tr> <th colSpan={2} class="cabecera" >  Inicio de Sesión </th> </tr>
-        <tr> <td class="renglon"> Usuario: </td> <td class="renglon"> <input type="text" name="txtUsuario" {...register("txtUsuario")} /> </td> </tr>
-        <tr> <td class="renglon"> Contrasena: </td> <td class="renglon"> <input type="password" name="txtPassword" {...register("txtPassword")} /> </td> </tr>
-        <tr> <td colSpan={2} class="renglonBotones"> 
-          <center>
-            <button class="boton" onClick={handleSubmit(onCancel)}> Cancelar </button>
-            <button class="boton" onClick={handleSubmit(OnSubmit)}> Entrar </button>          
-          </center>
-        </td> </tr>
-        </table>
+    <center> <text class="titulo"> Libreria "Potosinos" </text> </center> <br/> <br/>
 
-      </form>
-    
-    </div>  
+    <table>
+    <tr> <th colSpan={2} class="cabecera" >  Inicio de Sesión </th> </tr>
+    <tr> <td class="renglon"> Usuario: </td> <td class="renglon"> <input type="text" name="txtUsuario" {...register("txtUsuario")} /> </td> </tr>
+    <tr> <td class="renglon"> Contrasena: </td> <td class="renglon"> <input type="password" name="txtPassword" {...register("txtPassword")} /> </td> </tr>
+    <tr> <td colSpan={2} class="renglonBotones"> 
+      <center>
+        <button class="boton" onClick={handleSubmit(onCancel)}> Cancelar </button>
+        <button class="boton" onClick={handleSubmit(OnSubmit)}> Entrar </button>          
+      </center>
+    </td> </tr>
+    </table>
 
-    </React.Fragment>
-  )
-  
-}
+  </form>
+
+  </div>  
+
+  );
+
+};
+
+export default Login;

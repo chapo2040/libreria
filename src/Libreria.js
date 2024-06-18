@@ -3,7 +3,7 @@ import {useForm} from 'react-hook-form'
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-export default function Libreria() 
+const Libreria = ()  => 
 {
   const {register, handleSubmit, reset, formState: { errors }} = useForm();   
   const [Libros, setLibros] = useState([]);
@@ -18,7 +18,7 @@ export default function Libreria()
       if(isLoad == 0){ CargarSesion(); }
     }, []);  
 
-  function CargarSesion()
+  const CargarSesion = () =>
   {
       //alert('ObtenerSesion ! ');      
       isLoad = 1;
@@ -34,7 +34,7 @@ export default function Libreria()
       llenaLibros();
   }
 
-  function llenaLibros() 
+  const llenaLibros = () => 
   {
     //alert("llenaLibros. ");
     axios.get(dameURL() + `Libro`)
@@ -49,13 +49,13 @@ export default function Libreria()
     });
   }
 
-  function dameURL()
+  const dameURL = () =>
   {
     var lsPath = process.env.REACT_APP_NODE_ENV === '1' ? process.env.REACT_APP_SERVER_TEST : process.env.REACT_APP_SERVER;
     return lsPath;
   }
 
-  function onDelete(data, event)
+  const onDelete = (data, event) =>
   { 
     //alert('onDelete | ' + event.target.getAttribute('id'));
     var liId = event.target.getAttribute('id');
@@ -78,42 +78,42 @@ export default function Libreria()
     });    
   }
 
-  function onRefresh() 
+  const onRefresh = () => 
   {
     //alert('onRefresh: ');
     llenaLibros();
   } 
 
-  function onLogin() 
+  const onLogin = () => 
   {
     //alert('onLogin.');
     navigate('/login');  
   } 
 
-  function onAgregar(data, event) 
+  const onAgregar = (data, event) =>
   {    
     //alert('onAgregar.');    
     navigate('/agregar', { state: { edit:false } } );
   } 
 
-  function onEditar(data, event) 
+  const onEditar = (data, event) => 
   {
     //alert('onEditar | ' + event.target.getAttribute('id'));
     var liId = event.target.getAttribute('id');    
     navigate('/agregar', { state: { edit:true, id: liId } } );
   } 
 
-  function onPrestar(data, event) 
+  const onPrestar = (data, event) =>
   {    
     LibroExistencia(1, data, event);
   } 
 
-  function onRegresar(data, event) 
+  const onRegresar = (data, event) => 
   {    
     LibroExistencia(2, data, event);
   } 
 
-  function LibroExistencia(tipo, data, event) 
+  const LibroExistencia = (tipo, data, event) => 
   {    
     var liId = parseInt(event.target.getAttribute('id'));
     var lsNombre = event.target.getAttribute('nombre');
@@ -157,7 +157,7 @@ export default function Libreria()
     }    
   } 
 
-  function onCerrar() 
+  const onCerrar = () => 
   {
     //alert('onCerrar.');
     //localStorage.removeItem('usuario');
@@ -204,6 +204,8 @@ export default function Libreria()
         </form>
 
     </React.Fragment>
-  )
+  );
   
-}
+};
+
+export default Libreria;

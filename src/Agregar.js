@@ -3,11 +3,11 @@ import {useForm} from 'react-hook-form'
 import {useNavigate, useLocation} from 'react-router-dom';
 import axios from 'axios';
 
-export default function Agregar() 
+const Agregar = () =>
 {
   const {register, handleSubmit, reset, formState: { errors }} = useForm();   
   const navigate = useNavigate(); 
-  const {state} = useLocation();
+  const state = useLocation();
 
   const [Titulo, setTitulo] = useState("Agregar");
   const [isEdit, setEdit] = useState(false);
@@ -19,12 +19,12 @@ export default function Agregar()
   }, []);  
 
 
-  function buscaLibro() 
+  const buscaLibro = () =>
   {
     if(state.edit===true)
     {
       //alert("buscaLibro | id: " + state.id);
-      setTitulo("Editar");
+      setTitulo("Editar"); 
       setEdit(true);
       
       axios.get(dameURL() + `Libro/${state.id}`)
@@ -50,13 +50,13 @@ export default function Agregar()
     }
   }
 
-  function dameURL()
+  const dameURL = () =>
   {
     var lsPath = process.env.REACT_APP_NODE_ENV === '1' ? process.env.REACT_APP_SERVER_TEST : process.env.REACT_APP_SERVER;
     return lsPath;
   }
 
-  function limpiarFormulario()
+  const limpiarFormulario = () =>
   {
       reset({
         txtId: "",
@@ -65,7 +65,7 @@ export default function Agregar()
     });
   }  
 
-  function OnSubmit(data)
+  const OnSubmit = (data) =>
   {   
       //alert("OnSubmit. ");    
       if(validateForm(data)===true)
@@ -75,7 +75,7 @@ export default function Agregar()
       }     
   }
 
-  function validateForm(data)
+  const validateForm = (data) =>
   {
       if(data.txtId==='' || data.txtId === undefined)    
       {
@@ -91,7 +91,7 @@ export default function Agregar()
       return true;
   }
 
-  function agregarLibro(data)
+  const agregarLibro = (data) =>
   {
     // alert('agregarLibro.');    
     
@@ -111,7 +111,7 @@ export default function Agregar()
     });    
   }
   
-  function editarLibro(data)
+  const editarLibro = (data) =>
   {
     // alert('editarLibro.');    
     
@@ -134,7 +134,7 @@ export default function Agregar()
     }    
   }  
 
-  function onCancel()
+  const onCancel = () =>
   {
     //alert('onCancel: ');    
     navigate("/");    
@@ -166,6 +166,8 @@ export default function Agregar()
     </div>
 
     </React.Fragment>
-  )
+  );
   
-}
+};
+
+export default Agregar;
