@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {useForm} from 'react-hook-form'
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 const Libreria = ()  => 
 {
-  const {register, handleSubmit, reset, formState: { errors }} = useForm();   
+  const { handleSubmit } = useForm();   
   const [Libros, setLibros] = useState([]);
   const [Sesion, setSesion] = useState({});
   const navigate = useNavigate(); 
@@ -13,14 +13,14 @@ const Libreria = ()  =>
   var isLoad = 0;
 
   useEffect(() => 
-    { 
-      //alert("useEffect. ");
-      if(isLoad == 0){ CargarSesion(); }
-    }, []);  
+  { 
+    //alert("useEffect. ");
+    if(isLoad === 0){ CargarSesion(); }
+  }, []);  
 
   const CargarSesion = () =>
   {
-      //alert('ObtenerSesion ! ');      
+      //alert('CargarSesion ! ');      
       isLoad = 1;
 
       var loUsuario = JSON.parse(localStorage.getItem('usuario'));
@@ -28,7 +28,7 @@ const Libreria = ()  =>
       {
         //alert('loUsuario | username ' + loUsuario.username + ' - password: ' + loUsuario.password + " - isLogin: " + loUsuario.isLogin);
         setSesion(loUsuario);   
-        //alert(Sesion.isLogin);             
+        //alert("loUsuario | isLogin: " + Sesion.isLogin);             
       }
 
       llenaLibros();
@@ -63,7 +63,7 @@ const Libreria = ()  =>
     axios.delete(dameURL() + `Libro/${liId}`)
     .then(res => 
     {
-      if(res.data.error == 2)
+      if(res.data.error === 2)
       {
         alert("Error: " + res.data.mensaje); 
       }
@@ -122,7 +122,7 @@ const Libreria = ()  =>
 
     var liActualizar = 0;
     
-    if(tipo==1)
+    if(tipo===1)
     {
       var liCuenta = liPrestado + 1;
       if(liCuenta <= liExistencia ){ liPrestado++; liActualizar = 1; }
@@ -138,13 +138,13 @@ const Libreria = ()  =>
     //alert('LibroExistencia | liCuenta: ' + liCuenta + ' - existencia: ' + liExistencia);
     //alert('LibroExistencia | tipo: ' + tipo + ' - id: ' + liId + ' - nombre: ' + lsNombre + ' - existencia: ' + liExistencia + ' - Prestado: ' + liPrestado);
     
-    if(liActualizar == 1)
+    if(liActualizar === 1)
     {
       axios.put(dameURL() + `Libro/${liId}`, { id: liId, nombre: lsNombre, existencia: liExistencia, prestado: liPrestado })
       .then(res => 
       {       
         //console.log(res.data);
-        if(res.data.error == 2)
+        if(res.data.error === 2)
         {
           alert("Error: " + res.data.mensaje); 
           //limpiarFormulario();
@@ -177,7 +177,7 @@ const Libreria = ()  =>
             
             <center> <text class="titulo"> Libreria "Potosinos" </text> </center>
 
-            <text class="txtNombre"> {Sesion.isLogin == 1 ? ("<" + Sesion.nombre + ">") : ""}  </text>
+            <text class="txtNombre"> {Sesion.isLogin === true ? ("<" + Sesion.nombre + ">") : ""}  </text>
             <button class="btnIniciar" onClick={handleSubmit(onCerrar)} hidden={!Sesion.isLogin}> Salir </button>
             <button class="btnIniciar" onClick={handleSubmit(onLogin)} hidden={Sesion.isLogin}> Iniciar </button>
             <button class="btnAgregar" onClick={handleSubmit(onAgregar)}> Agregar </button> 

@@ -5,9 +5,9 @@ import axios from 'axios';
 
 const Agregar = () =>
 {
-  const {register, handleSubmit, reset, formState: { errors }} = useForm();   
+  const {register, handleSubmit, reset} = useForm();   
   const navigate = useNavigate(); 
-  const state = useLocation();
+  const {state} = useLocation();
 
   const [Titulo, setTitulo] = useState("Agregar");
   const [isEdit, setEdit] = useState(false);
@@ -99,7 +99,7 @@ const Agregar = () =>
     .then(res => 
     {
       //alert(res.data);
-      if(res.data.error == 2)
+      if(res.data.error === 2)
       {
         alert("Error: " + res.data.mensaje); 
         //limpiarFormulario();
@@ -121,7 +121,7 @@ const Agregar = () =>
       .then(res => 
       {       
         //console.log(res.data);
-        if(res.data.error == 2)
+        if(res.data.error === 2)
         {
           alert("Error: " + res.data.mensaje); 
           //limpiarFormulario();
