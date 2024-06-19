@@ -12,10 +12,12 @@ const Agregar = () =>
   const [Titulo, setTitulo] = useState("Agregar");
   const [isEdit, setEdit] = useState(false);
   
+  var isLoad = 0;
+
   useEffect(() => 
   { 
     //alert("useEffect. ");
-    buscaLibro();
+    if(isLoad === 0 && state != null){ buscaLibro(); }
   }, []);  
 
 
